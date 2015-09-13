@@ -34,6 +34,7 @@
   <modules>
     <module>ecSystem-Core</module>
     <module>ecSystem-Simulated</module>
+    <module>ecSystem-App</module>
     <module>ecSystem-Web</module>
   </modules>
 </project>

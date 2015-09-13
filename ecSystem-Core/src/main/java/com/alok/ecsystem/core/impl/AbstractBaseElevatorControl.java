@@ -2,7 +2,6 @@ package com.alok.ecsystem.core.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -11,7 +10,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
 import com.alok.ecsystem.core.ElevatorControlInterface;
-import com.alok.ecsystem.core.FloorControlInterface;
+import com.alok.ecsystem.core.config.ElevatorSystemConfig;
 
 public abstract class AbstractBaseElevatorControl implements ElevatorControlInterface {
 
@@ -36,6 +35,7 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	private int nextFloorStop;
 
 	private SortedSet<Integer> requestedFloorIndexes = Collections.synchronizedSortedSet(new TreeSet<Integer>());
+	private boolean dirtyRequestedFloorIndexes = false;
 
 	public AbstractBaseElevatorControl(int id, int minFloor, int maxFloor) {
 		this.id = id;
@@ -74,8 +74,10 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 			if (!requestedFloorIndexes.contains(requestedFloorIndex)) {
 				logger.debug("added requestedFloorIndex=" + requestedFloorIndex);
 				requestedFloorIndexes.add(requestedFloorIndex);
-				if (state == STATE.IDLE)
+				dirtyRequestedFloorIndexes = true;
+				if (state == STATE.IDLE){
 					calculateNextState();
+				}		
 			}
 		} else {
 			String msg = "Invalid floor index request. index=" + requestedFloorIndex + " (" + minFloor + "," + maxFloor + ")";
@@ -91,7 +93,7 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 			state = STATE.DOOR_OPENING;
 			startDoorOpening();
 			return true;
-		} else if(state == STATE.DOOR_OPEN || state == STATE.DOOR_OPENING){
+		} else if (state == STATE.DOOR_OPEN || state == STATE.DOOR_OPENING) {
 			return true;
 		}
 		return false;
@@ -108,19 +110,20 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	}
 
 	public synchronized void doorOpened() {
-		logger.info(id + ":Door Open at floor=" + currentFloorIndex);
+		logger.info("Now elevator " + id + " at floor " + currentFloorIndex + " door is open.");
 		state = STATE.DOOR_OPEN;
 	}
 
 	public synchronized void doorClosed() {
-		logger.info(id + ":Door Closed at floor=" + currentFloorIndex);
+		logger.info("Now elevator " + id + " at floor " + currentFloorIndex + " door is closed.");
 		state = STATE.IDLE;
 		calculateNextState();
 	}
 
-	public int getCurrentFloor(){
+	public int getCurrentFloor() {
 		return currentFloorIndex;
 	}
+
 	private synchronized void calculateNextState() {
 		logger.debug("Enter calculateNextState()");
 		if (state != STATE.IDLE) {
@@ -133,7 +136,7 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 			state = STATE.IDLE;
 			return; // Nothing to do
 		}
-
+		dirtyRequestedFloorIndexes = false;
 		int downNext = -1;
 		int upNext = -1;
 		int nextStop = -1;
@@ -177,11 +180,11 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	}
 
 	protected synchronized boolean movedToNewFloor() {
-		
+
 		logger.debug("Enter movedToNewFloor() currentFloorIndex=" + currentFloorIndex + " movingDirection=" + movingDirection + " nextFloorStop=" + nextFloorStop);
-		
-		ElevatorSystemConfig.getFloorInterface(currentFloorIndex).elevatorLeft(this);
-		
+
+		ElevatorSystemConfig.getConfig().getFloorInterface(currentFloorIndex).elevatorLeft(this);
+
 		if (Direction.UP.equals(movingDirection)) {
 			currentFloorIndex++;
 			if (currentFloorIndex == maxFloor) {
@@ -193,11 +196,14 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 				movingDirection = Direction.UP;
 			}
 		}
+		logger.info("Now elevator " + id + " at floor " + currentFloorIndex + " moving " + movingDirection);
 
-		logger.info("Now elevator " +id+ " at floor" + currentFloorIndex + " moving " + movingDirection);
-
-		
-
+		if(dirtyRequestedFloorIndexes){
+			state = STATE.IDLE;	   
+			calculateNextState();
+			return false;
+		}
+	
 		if (currentFloorIndex == nextFloorStop) {
 			logger.debug("Reached requested floor currentFloorIndex=" + currentFloorIndex + " movingDirection=" + movingDirection + " nextFloorStop=" + nextFloorStop);
 			openDoorAndNotify();
@@ -216,7 +222,7 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 
 	private void openDoorAndNotify() {
 		logger.debug("Opening door floor currentFloorIndex=" + currentFloorIndex + " movingDirection" + movingDirection + "nextFloorStop" + nextFloorStop);
-		BaseFloorControl floorInputBoard = ElevatorSystemConfig.getFloorInterface(currentFloorIndex);
+		BaseFloorControl floorInputBoard = ElevatorSystemConfig.getConfig().getFloorInterface(currentFloorIndex);
 		state = STATE.DOOR_OPENING;
 		requestedFloorIndexes.remove(currentFloorIndex);
 		nextFloorStop = -1;
@@ -236,11 +242,11 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 
 	@Override
 	public String toString() {
-		return ""  + id ;
+		return "" + id;
 	}
-    
+
 	public int getId() {
-	
+
 		return id;
 	}
 

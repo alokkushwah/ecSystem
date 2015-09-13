@@ -1,7 +1,5 @@
 package com.alok.ecsystem.core.impl;
 
-import java.util.Set;
-
 import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
 
 public class SimulateElevator extends AbstractBaseElevatorControl {
@@ -18,7 +16,7 @@ public class SimulateElevator extends AbstractBaseElevatorControl {
 
 			public void run() {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					// interrupted
 					return;
@@ -58,7 +56,7 @@ public class SimulateElevator extends AbstractBaseElevatorControl {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(3000);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(Thread.currentThread().getName() + ":InterruptedException");
 					}

@@ -1,4 +1,4 @@
-package com.alok.ecsystem.core.impl;
+package com.alok.ecsystem.core;
 
 
 import java.util.Observable;
@@ -6,16 +6,21 @@ import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
-import com.alok.ecsystem.core.FloorControlInterface;
+import com.alok.ecsystem.core.config.ElevatorSystemConfig;
+import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
+import com.alok.ecsystem.core.impl.BaseFloorControl;
 
 public class ElevatorSystemControl implements Observer {
 
 	private static final Logger logger = Logger.getLogger(ElevatorSystemControl.class);
+	private ElevatorSystemConfig config;
+	
 	
 	public ElevatorSystemControl() {
-		int total  = ElevatorSystemConfig.topFloorIndex();
+		config =  ElevatorSystemConfig.getConfig();
+		int total  = config.topFloorIndex();
 		for (int i = 0; i <= total; i++) {
-			((Observable)ElevatorSystemConfig.getFloorInterface(i)).addObserver(this);
+			((Observable)config.getFloorInterface(i)).addObserver(this);
 		}
 	}
 	
@@ -28,14 +33,14 @@ public class ElevatorSystemControl implements Observer {
 		FloorControlInterface floorControl = (FloorControlInterface)observable;
 		int minCost = Integer.MAX_VALUE;
 		AbstractBaseElevatorControl selected = null;
-		for (AbstractBaseElevatorControl elevertor: ElevatorSystemConfig.getElevetors()) {
+		for (AbstractBaseElevatorControl elevertor: config.getElevetors()) {
 			int cost = elevertor.cost(floorControl.getId());
 			if(cost<minCost){
 				minCost = cost;
 				selected = elevertor;
 			}
 		}
-		
+
 		if(selected==null) {
 			logger.error("No elevetor is available to serve the request.");
 			floorControl.setElevatorRequest(false); 
@@ -46,7 +51,7 @@ public class ElevatorSystemControl implements Observer {
 	}
 
 	public BaseFloorControl getFloorControl(int index){
-		return ElevatorSystemConfig.getFloorInterface(index);
+		return config.getFloorInterface(index);
 	}
 
 }

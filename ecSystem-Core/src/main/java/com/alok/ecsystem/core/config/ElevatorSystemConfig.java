@@ -1,9 +1,11 @@
-package com.alok.ecsystem.core.impl;
+package com.alok.ecsystem.core.config;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
+import com.alok.ecsystem.core.impl.BaseFloorControl;
 import com.alok.ecsystem.core.util.PropertyUtil;
 
 public final class ElevatorSystemConfig  {
@@ -49,16 +51,20 @@ public final class ElevatorSystemConfig  {
 		
 	}
 	
-	public static List<AbstractBaseElevatorControl> getElevetors(){
-		return instance.elevetors;
+	public static ElevatorSystemConfig getConfig(){
+		return instance;
 	}
 	
-	public static BaseFloorControl getFloorInterface(int index){
-		return instance.floorInputBoards.get(index);
+	public List<AbstractBaseElevatorControl> getElevetors(){
+		return elevetors;
+	}
+	
+	public BaseFloorControl getFloorInterface(int index){
+		return floorInputBoards.get(index);
 	}
 
-	public static int topFloorIndex(){
-		return instance.floorInputBoards.size()-1;
+	public int topFloorIndex(){
+		return floorInputBoards.size()-1;
 	}
 
 }

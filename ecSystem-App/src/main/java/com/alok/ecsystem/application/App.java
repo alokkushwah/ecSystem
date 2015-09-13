@@ -1,4 +1,4 @@
-package com.alok.ecsystem.core.control;
+package com.alok.ecsystem.application;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import com.alok.ecsystem.core.FloorControlInterface;
 import com.alok.ecsystem.core.impl.BaseFloorControl;
 
 /**
- * Interactive App to use Elevator System.
+ * Interactive stand alone command line application with simulated Elevator.
  * 
  */
 public class App {
@@ -35,6 +35,7 @@ public class App {
 			String command = readCommand();
 			if (command.isEmpty()) {
 				System.err.println("Please select a command from menu.");
+				continue;
 			} else if ("X".equalsIgnoreCase(command)) {
 				System.out.println("Good bye.");
 				return;
@@ -109,21 +110,20 @@ public class App {
 
 	private void printMenu() {
 
-		System.out.println("Menu:");
 		if (floorControl != null) {
-			System.out.println("At Floor:" + floorControl.getId());
+			System.out.println("Your are at Floor:" + floorControl.getId());
 			System.out.println("P - Call elevator to your floor.");
 			if (floorControl.getElevatorControl() != null) {
 				System.out.println("I - Hope in elevator.");
 			}
 		} else if (elevatorControl != null) {
+			System.out.println("Your are inside elevator. Elevator at floor:" + elevatorControl.getCurrentFloor());
 			System.out.println("Choose Floor:");
 			for (int i : elevatorControl.getAllowedFloorList()) {
 				System.out.print(i + ",");
 			}
 			System.out.println();
 			System.out.println("O - Open door and hope out");
-
 		}
 		System.out.println("R <floorIndex> - request to move elevotor at <floorIndex>");
 		System.out.println("G <floorIndex> - apear at <floorIndex>");
