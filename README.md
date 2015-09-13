@@ -19,7 +19,7 @@ You can run either of the application. Command line application has more functio
 
 # Command line application
 
-Download Jar: https://github.com/alokkushwah/ecSystem/blob/master/bin/ecSystemApp.jar
+Download Jar: https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemApp.jar
 
 Run command: java -jar ecSystemApp.jar
 
@@ -29,7 +29,7 @@ Default Config: Building has 5 floors (0-4). There are 2 elevators serving the b
 
 # Web application
 
-Download Jar: https://github.com/alokkushwah/ecSystem/blob/master/bin/ecSystemWeb.jar
+Download Jar: https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemWeb.jar
 
 Run command: java -jar ecSystemWeb.jar
 
