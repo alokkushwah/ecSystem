@@ -55,7 +55,7 @@ public class App {
 		// request elevator from any floor
 		if (command.startsWith("R")) {
 			int index = parseCommand(command);
-			BaseFloorControl fControl = control.getFloorControl(index);
+			FloorControlInterface fControl = control.getFloorControl(index);
 			fControl.setElevatorRequest(true);
 			System.out.println("Pressed button at:" + index);
 			return;

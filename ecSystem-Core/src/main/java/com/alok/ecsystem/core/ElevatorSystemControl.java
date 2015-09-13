@@ -50,8 +50,12 @@ public class ElevatorSystemControl implements Observer {
 		selected.addFloorRequest(floorControl.getId());
 	}
 
-	public BaseFloorControl getFloorControl(int index){
+	public FloorControlInterface getFloorControl(int index){
 		return config.getFloorInterface(index);
+	}
+
+	public ElevatorControlInterface getElevetorControl(int index){
+		return config.getElevetors().get(index);
 	}
 
 }

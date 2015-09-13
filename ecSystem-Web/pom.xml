@@ -2,62 +2,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.springframework</groupId>
+	<artifactId>gs-rest-service</artifactId>
+	<version>0.1.0</version>
+
 	<parent>
-		<artifactId>ecSystem</artifactId>
-		<groupId>com.alok.ecsystem</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.2.5.RELEASE</version>
 	</parent>
-
-	<artifactId>ecSystem-Web</artifactId>
-	<packaging>war</packaging>
-
-	<name>ecSystem-Web</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jettyVersion>9.0.2.v20130417</jettyVersion>
-	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jettyVersion}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.alok.ecsystem</groupId>
 			<artifactId>ecSystem-Simulated</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
+
+	<properties>
+		<java.version>1.7</java.version>
+	</properties>
+
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jettyVersion}</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
