@@ -2,20 +2,20 @@
 
 Simple implementation of Elevator Control System. This project consists of four modules.
 
-# 1. ecSystem-Core
+1. ecSystem-Core
 	Core classes and interfaces with base implementation for elevator control system. 
-# 2. ecSystem-Simulated
+2. ecSystem-Simulated
 	A dummy implementation elevator to test the system with.
-# 3. ecSystem-App
+3. ecSystem-App
 	A simulated stand alone application that displays menu and accepts command to interact with Elevator Control System.
-# 4.ecSystem-App 
+4. ecSystem-App 
 	A simulated stand alone web application that exposes RESTful services to interact with Elevator Control System.
 
-## Faster way to get things runnig
+## Faster way to get things running
 
-Pre-requirement: You will need Java 1.7+ on you system.
+Pre-requirement: You will need Java 1.7+ on your system.
 
-You can run either of application. Command line application has more functionality then Web application.
+You can run either of the application. Command line application has more functionality than Web application.
 
 # Command line application
 
