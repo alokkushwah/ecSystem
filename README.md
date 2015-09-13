@@ -1,4 +1,4 @@
-## ecSystem - Elevator Control System 
+# ecSystem - Elevator Control System 
 
 Simple implementation of Elevator Control System. This project consists of four modules.
 
@@ -17,7 +17,7 @@ Pre-requirement: You will need Java 1.7+ on your system.
 
 You can run either of the application. Command line application has more functionality than Web application.
 
-# Command line application
+### Command line application
 
 Download Jar: https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemApp.jar
 
@@ -27,17 +27,17 @@ Follow on-screen menu to interect with system.
 
 Default Config: Building has 5 floors (0-4). There are 2 elevators serving the building. 
 
-# Web application
+### Web application
 
 Download Jar: https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemWeb.jar
 
 Run command: java -jar ecSystemWeb.jar
 
-Check elevator status
+#### Check elevator status
 	URL:http://localhost:8080/elevator
 	Method: GET
 
-Make floor request- 
+#### Make floor request- 
 	URL: http://localhost:8080/elevator
 	Method: POST
 	Content-Type:application/json
