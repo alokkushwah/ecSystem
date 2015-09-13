@@ -34,14 +34,14 @@ Download Jar: https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemWeb
 Run command: java -jar ecSystemWeb.jar
 
 Check elevator status
-URL:http://localhost:8080/elevator
-Method: GET
+	URL:http://localhost:8080/elevator
+	Method: GET
 
 Make floor request- 
-URL: http://localhost:8080/elevator
-Method: POST
-Content-Type:application/json
-request body: {"floorIndex":2}
+	URL: http://localhost:8080/elevator
+	Method: POST
+	Content-Type:application/json
+	request body: {"floorIndex":2}
 
 Default Config: Building has 5 floors (0-4). There is only 1 elevator serving the building. 
 
