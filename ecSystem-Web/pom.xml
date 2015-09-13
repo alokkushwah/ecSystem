@@ -9,16 +9,23 @@
 	</parent>
 
 	<artifactId>ecSystem-Web</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
-	<name>CoreControl</name>
+	<name>ecSystem-Web</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jettyVersion>9.0.2.v20130417</jettyVersion>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jettyVersion}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

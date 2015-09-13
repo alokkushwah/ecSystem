@@ -8,16 +8,7 @@
   <name>ecSystem</name>
   <description>ecSystem</description>
   
-  <properties>
-    <jettyVersion>9.0.2.v20130417</jettyVersion>
-  </properties>
-  
   <dependencies>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>${jettyVersion}</version>
-    </dependency>
 	<dependency>
 		<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
