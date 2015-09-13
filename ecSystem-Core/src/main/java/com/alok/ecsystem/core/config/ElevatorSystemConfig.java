@@ -8,12 +8,28 @@ import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
 import com.alok.ecsystem.core.impl.BaseFloorControl;
 import com.alok.ecsystem.core.util.PropertyUtil;
 
+/**
+ * It load and make elevator configuration from properties files.
+ * 
+ * It initialize the system based on classpath resource "ecSystem.properties". 
+ * Properties can be override by external property file. Path for can be defined in "ecsPropFile" system properties.
+ * 
+ * It instantiate all floor control interfaces and elevators based on configuration.
+ * 
+ * It is a singleton class to keep the configuration centralized and easily accessible.
+ * 
+ * @author Alok Kushwah (akushwah)
+ */
 public final class ElevatorSystemConfig  {
 	
 	private static ElevatorSystemConfig instance =  new ElevatorSystemConfig();
 	private final List<BaseFloorControl> floorInputBoards =  new ArrayList<BaseFloorControl>();
 	private final List<AbstractBaseElevatorControl> elevetors = new ArrayList<AbstractBaseElevatorControl>();
 	
+	/**
+	 * Private constructor to create singleton instance.
+	 * It loads the properties in initialize the system. 
+	 */
 	private ElevatorSystemConfig()  {
 		PropertyUtil.load("ecSystem.properties");
 		String externalPropertyFile = System.getProperty("ecsPropFile");
@@ -51,14 +67,27 @@ public final class ElevatorSystemConfig  {
 		
 	}
 	
+	/**
+	 * getter for singleton config instance.
+	 * @return
+	 */
 	public static ElevatorSystemConfig getConfig(){
 		return instance;
 	}
 	
+	/**
+	 * getter for list of elevators.
+	 * @return List<AbstractBaseElevatorControl>
+	 */
 	public List<AbstractBaseElevatorControl> getElevetors(){
 		return elevetors;
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public BaseFloorControl getFloorInterface(int index){
 		return floorInputBoards.get(index);
 	}

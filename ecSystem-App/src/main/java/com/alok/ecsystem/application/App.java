@@ -12,6 +12,9 @@ import com.alok.ecsystem.core.impl.BaseFloorControl;
 /**
  * Interactive stand alone command line application with simulated Elevator.
  * 
+ * This command line application initialize  
+ * 
+ * @author Alok Kushwah (akushwah)
  */
 public class App {
 	

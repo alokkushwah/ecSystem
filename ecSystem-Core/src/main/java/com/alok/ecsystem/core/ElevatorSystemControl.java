@@ -8,14 +8,25 @@ import org.apache.log4j.Logger;
 
 import com.alok.ecsystem.core.config.ElevatorSystemConfig;
 import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
-import com.alok.ecsystem.core.impl.BaseFloorControl;
 
+/**
+ * This class is central elevator control system. It keeps eye on all the floor. 
+ * It also assign requests to elevators based on minimum costs.
+ * 
+ * @author Alok Kushwah (akushwah)
+ */
 public class ElevatorSystemControl implements Observer {
 
 	private static final Logger logger = Logger.getLogger(ElevatorSystemControl.class);
 	private ElevatorSystemConfig config;
 	
-	
+	/**
+	 * Constructor to create new ElevatorSystemControl.
+	 * 
+	 * It initialize the system configuration with help of {@link ElevatorSystemConfig}
+	 * 
+	 * Add itslef as observer to all floor interface controllers.
+	 */
 	public ElevatorSystemControl() {
 		config =  ElevatorSystemConfig.getConfig();
 		int total  = config.topFloorIndex();
@@ -24,6 +35,12 @@ public class ElevatorSystemControl implements Observer {
 		}
 	}
 	
+	/**
+	 * Gets notification from floor interface controllers and react as per the event.
+	 * 
+	 * It react of FLOOR_EVENT.BUTTON_PRESSED event. On button press it creates and assign 
+	 * floor request to and elevator based on minimum cost. 
+	 */
 	public void update(Observable observable, Object arg) {
 
 		if(FloorControlInterface.FLOOR_EVENT.BUTTON_PRESSED != arg) {
@@ -50,10 +67,22 @@ public class ElevatorSystemControl implements Observer {
 		selected.addFloorRequest(floorControl.getId());
 	}
 
+	/**
+	 * Return floor interface controller for a particular floor.
+	 * @param index - floor index
+	 * @return {@link FloorControlInterface}
+	 * @throws RuntimeException in case invalid index
+	 */
 	public FloorControlInterface getFloorControl(int index){
 		return config.getFloorInterface(index);
 	}
 
+	/**
+	 * Return Elevator Control Interface for a particular elevator.
+	 * @param index - elevator id
+	 * @return {@link ElevatorControlInterface}
+	 * @throws RuntimeException in case invalid index
+	 */
 	public ElevatorControlInterface getElevetorControl(int index){
 		return config.getElevetors().get(index);
 	}

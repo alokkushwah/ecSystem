@@ -2,6 +2,12 @@ package com.alok.ecsystem.core.impl;
 
 import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
 
+/**
+ * Simulated elevator which actually sleeps and does nothing and take credit of doing crucial things.
+ *  
+ * @author Alok Kushwah (akushwah)
+ *
+ */
 public class SimulateElevator extends AbstractBaseElevatorControl {
 
 	public SimulateElevator(int id, int minFloor, int maxFloor) {

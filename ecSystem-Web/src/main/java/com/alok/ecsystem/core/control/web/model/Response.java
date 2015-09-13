@@ -1,5 +1,10 @@
-package com.alok.ecsystem.core.control.web;
+package com.alok.ecsystem.core.control.web.model;
 
+/**
+ * Response bean with success flag and details message.
+ *  
+ * @author Alok Kushwah (akushwah)
+ */
 public class Response {
 	private boolean success;
 	private String message;

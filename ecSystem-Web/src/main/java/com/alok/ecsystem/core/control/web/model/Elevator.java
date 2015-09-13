@@ -1,8 +1,12 @@
-package com.alok.ecsystem.core.control.web;
+package com.alok.ecsystem.core.control.web.model;
 
-import java.util.List;
 import java.util.Set;
 
+/**
+ * Elevator bean to represent elevator state.
+ * 
+ * @author Alok Kushwah (akushwah)
+ */
 public class Elevator {
 	private int id;
 	private int currentFloorIndex;

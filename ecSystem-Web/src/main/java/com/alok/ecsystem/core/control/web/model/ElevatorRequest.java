@@ -1,5 +1,11 @@
-package com.alok.ecsystem.core.control.web;
+package com.alok.ecsystem.core.control.web.model;
 
+/**
+ * Elevator request bean with floor index.
+ * 
+ * @author Alok Kushwah (akushwah)
+ *
+ */
 public class ElevatorRequest {
 	int floorIndex;
 
