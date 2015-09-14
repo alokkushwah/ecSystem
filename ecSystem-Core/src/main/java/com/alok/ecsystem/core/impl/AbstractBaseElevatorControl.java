@@ -11,6 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.alok.ecsystem.core.ElevatorControlInterface;
 import com.alok.ecsystem.core.ElevatorSystemControl;
+import com.alok.ecsystem.core.FloorControlInterface;
+import com.alok.ecsystem.core.ElevatorControlInterface.DIRECTION;
+import com.alok.ecsystem.core.ElevatorControlInterface.STATE;
 import com.alok.ecsystem.core.config.ElevatorSystemConfig;
 
 /**
@@ -35,20 +38,14 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 
 	private static final Logger logger = Logger.getLogger(AbstractBaseElevatorControl.class);
 
-	private enum STATE {
-		IDLE, MOVING, DOOR_OPENING, DOOR_OPEN, DOOR_CLOSING, OUT_OF_ORDER
-	};
-
-	private enum Direction {
-		UP, DOWN;
-	}
+	
 
 	private int id;
 	private int maxFloor;
 	private int minFloor;
 	private List<Integer> validFloorList;
 
-	private Direction movingDirection = Direction.UP;
+	private DIRECTION movingDirection = DIRECTION.UP;
 	protected STATE state = STATE.IDLE;
 	private int currentFloorIndex = 0;
 	private int nextFloorStop;
@@ -87,6 +84,23 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	public List<Integer> getAllowedFloorList() {
 		return validFloorList;
 	}
+	
+	/**
+	 * Returns state of elevator.
+	 * @return {@link STATE}
+	 */
+	public STATE getState(){
+		return state;
+	}
+
+	/**
+	 * Returns direction of movement elevator.
+	 * @return {@link DIRECTION}
+	 */
+	public DIRECTION getDirection(){
+		return movingDirection;
+	}
+
 
 	/**
 	 * Current floor of elevator.
@@ -103,6 +117,37 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	public Set<Integer> getFloorRequests() {
 		return requestedFloorIndexes;
 	}
+	
+	/**
+	 * Returns cost estimation to go to given floor from the current state.
+	 * Helper methdo for {@link ElevatorSystemControl} in deciding which elevator should get the request.
+	 * 
+	 * This method can be override by implementor in case cost calculation is different.
+	 * 
+	 * @param requestedFloorIndex
+	 * @return
+	 */
+	public int estimatedFloorRequestCost(int requestedFloorIndex) {
+		logger.debug("Enter cost() requestedFloorIndex=" + requestedFloorIndex);
+		if (requestedFloorIndex < minFloor && requestedFloorIndex > maxFloor) {
+			throw new RuntimeException("Invalid floor index request. index=" + requestedFloorIndex + " (" + minFloor + "," + maxFloor + ")");
+		}
+		int cost = Math.abs(currentFloorIndex - requestedFloorIndex);
+		if (state == STATE.MOVING) {
+			if (movingDirection == DIRECTION.UP) {
+				if (requestedFloorIndex < currentFloorIndex) {
+					cost += Math.abs((currentFloorIndex - requestedFloorIndexes.last()) * 2);
+				}
+			} else { // moving down
+				if (requestedFloorIndex > currentFloorIndex) {
+					cost += Math.abs((currentFloorIndex - requestedFloorIndexes.first()) * 2);
+				}
+			}
+		}
+		logger.debug("Exit cost() requestedFloorIndex=" + requestedFloorIndex + " currentFloorIndex=" + currentFloorIndex + " movingDirection=" + movingDirection + " cost=" + cost);
+		return cost;
+	}
+
 	
 	/**
 	 * Accepts a new floor request. Initialize movement in case elevator is "IDLE".
@@ -160,36 +205,6 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	
 
 	/**
-	 * Returns cost estimation to go to given floor from the current state.
-	 * Helper methdo for {@link ElevatorSystemControl} in deciding which elevator should get the request.
-	 * 
-	 * This method can be override by implementor in case cost calculation is different.
-	 * 
-	 * @param requestedFloorIndex
-	 * @return
-	 */
-	public int cost(int requestedFloorIndex) {
-		logger.debug("Enter cost() requestedFloorIndex=" + requestedFloorIndex);
-		if (requestedFloorIndex < minFloor && requestedFloorIndex > maxFloor) {
-			throw new RuntimeException("Invalid floor index request. index=" + requestedFloorIndex + " (" + minFloor + "," + maxFloor + ")");
-		}
-		int cost = Math.abs(currentFloorIndex - requestedFloorIndex);
-		if (state == STATE.MOVING) {
-			if (movingDirection == Direction.UP) {
-				if (requestedFloorIndex < currentFloorIndex) {
-					cost += Math.abs((currentFloorIndex - requestedFloorIndexes.last()) * 2);
-				}
-			} else { // moving down
-				if (requestedFloorIndex > currentFloorIndex) {
-					cost += Math.abs((currentFloorIndex - requestedFloorIndexes.first()) * 2);
-				}
-			}
-		}
-		logger.debug("Exit cost() requestedFloorIndex=" + requestedFloorIndex + " currentFloorIndex=" + currentFloorIndex + " movingDirection=" + movingDirection + " cost=" + cost);
-		return cost;
-	}
-
-	/**
 	 * This method must be called by implementor after door is fully opened. 
 	 */
 	protected synchronized void doorOpened() {
@@ -216,15 +231,15 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 
 		ElevatorSystemConfig.getConfig().getFloorInterface(currentFloorIndex).elevatorLeft(this);
 
-		if (Direction.UP.equals(movingDirection)) {
+		if (DIRECTION.UP.equals(movingDirection)) {
 			currentFloorIndex++;
 			if (currentFloorIndex == maxFloor) {
-				movingDirection = Direction.DOWN;
+				movingDirection = DIRECTION.DOWN;
 			}
-		} else if (Direction.DOWN.equals(movingDirection)) {
+		} else if (DIRECTION.DOWN.equals(movingDirection)) {
 			currentFloorIndex--;
 			if (currentFloorIndex == minFloor) {
-				movingDirection = Direction.UP;
+				movingDirection = DIRECTION.UP;
 			}
 		}
 		logger.info("Now elevator " + id + " at floor " + currentFloorIndex + " moving " + movingDirection);
@@ -303,16 +318,16 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 			return;
 		}
 
-		if (Direction.UP == movingDirection) {
+		if (DIRECTION.UP == movingDirection) {
 			if (upNext == -1) {
-				movingDirection = Direction.DOWN;
+				movingDirection = DIRECTION.DOWN;
 				nextFloorStop = downNext;
 			} else {
 				nextFloorStop = upNext;
 			}
-		} else if (Direction.DOWN == movingDirection) {
+		} else if (DIRECTION.DOWN == movingDirection) {
 			if (downNext == -1) {
-				movingDirection = Direction.UP;
+				movingDirection = DIRECTION.UP;
 				nextFloorStop = upNext;
 			} else {
 				nextFloorStop = downNext;
@@ -329,7 +344,7 @@ public abstract class AbstractBaseElevatorControl implements ElevatorControlInte
 	 */
 	private void openDoorAndNotify() {
 		logger.debug("Opening door floor currentFloorIndex=" + currentFloorIndex + " movingDirection" + movingDirection + "nextFloorStop" + nextFloorStop);
-		BaseFloorControl floorInputBoard = ElevatorSystemConfig.getConfig().getFloorInterface(currentFloorIndex);
+		FloorControlInterface floorInputBoard = ElevatorSystemConfig.getConfig().getFloorInterface(currentFloorIndex);
 		state = STATE.DOOR_OPENING;
 		requestedFloorIndexes.remove(currentFloorIndex);
 		nextFloorStop = -1;

@@ -11,6 +11,20 @@ import java.util.Set;
  * @author Alok Kushwah (akushwah)
  */
 public interface ElevatorControlInterface {
+	
+	/**
+	 * States of Elevator
+	 */
+	public enum STATE {
+		IDLE, MOVING, DOOR_OPENING, DOOR_OPEN, DOOR_CLOSING, OUT_OF_ORDER
+	};
+
+	/**
+	 * Direction of elevator 
+	 */
+	public enum DIRECTION {
+		UP, DOWN;
+	}
 
 	/**
 	 * Unique identification of elevator.
@@ -23,12 +37,31 @@ public interface ElevatorControlInterface {
 	 * @return {@link List}
 	 */
 	public List<Integer> getAllowedFloorList();
-	
+
+	/**
+	 * Returns state of elevator.
+	 * @return {@link STATE}
+	 */
+	public STATE getState();
+
+	/**
+	 * Returns direction of movement elevator.
+	 * @return {@link DIRECTION}
+	 */
+	public DIRECTION getDirection();
+
 	/**
 	 * Current floor of elevator.
 	 * @return int - floor index
 	 */
 	public int getCurrentFloor();
+	
+	/**
+	 * Returns cost estimation to go to given floor from the current state.
+	 * @param requestedFloorIndex 
+	 * @return int - cost
+	 */
+	public int estimatedFloorRequestCost(int requestedFloorIndex);
 
 	/**
 	 * Request to go to particular floor. It may throw {@link RuntimeException} in case floor index is invalid.

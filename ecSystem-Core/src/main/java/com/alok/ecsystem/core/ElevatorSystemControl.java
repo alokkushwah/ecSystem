@@ -3,11 +3,8 @@ package com.alok.ecsystem.core;
 
 import java.util.Observable;
 import java.util.Observer;
-
 import org.apache.log4j.Logger;
-
 import com.alok.ecsystem.core.config.ElevatorSystemConfig;
-import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
 
 /**
  * This class is central elevator control system. It keeps eye on all the floor. 
@@ -49,9 +46,9 @@ public class ElevatorSystemControl implements Observer {
 
 		FloorControlInterface floorControl = (FloorControlInterface)observable;
 		int minCost = Integer.MAX_VALUE;
-		AbstractBaseElevatorControl selected = null;
-		for (AbstractBaseElevatorControl elevertor: config.getElevetors()) {
-			int cost = elevertor.cost(floorControl.getId());
+		ElevatorControlInterface selected = null;
+		for (ElevatorControlInterface elevertor: config.getElevetors()) {
+			int cost = elevertor.estimatedFloorRequestCost(floorControl.getId());
 			if(cost<minCost){
 				minCost = cost;
 				selected = elevertor;

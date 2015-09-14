@@ -44,4 +44,9 @@ public interface FloorControlInterface {
 	 */
 	public void elevatorArrived(ElevatorControlInterface elevator);
 	
+	/**
+	 * This method is called by elevator to announce elevator left.
+	 * @param elevator
+	 */
+	public void elevatorLeft(ElevatorControlInterface elevator);
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alok.ecsystem.core.ElevatorControlInterface;
+import com.alok.ecsystem.core.FloorControlInterface;
 import com.alok.ecsystem.core.impl.AbstractBaseElevatorControl;
 import com.alok.ecsystem.core.impl.BaseFloorControl;
 import com.alok.ecsystem.core.util.PropertyUtil;
@@ -23,8 +25,8 @@ import com.alok.ecsystem.core.util.PropertyUtil;
 public final class ElevatorSystemConfig  {
 	
 	private static ElevatorSystemConfig instance =  new ElevatorSystemConfig();
-	private final List<BaseFloorControl> floorInputBoards =  new ArrayList<BaseFloorControl>();
-	private final List<AbstractBaseElevatorControl> elevetors = new ArrayList<AbstractBaseElevatorControl>();
+	private final List<FloorControlInterface> floorInputBoards =  new ArrayList<FloorControlInterface>();
+	private final List<ElevatorControlInterface> elevetors = new ArrayList<ElevatorControlInterface>();
 	
 	/**
 	 * Private constructor to create singleton instance.
@@ -79,7 +81,7 @@ public final class ElevatorSystemConfig  {
 	 * getter for list of elevators.
 	 * @return List<AbstractBaseElevatorControl>
 	 */
-	public List<AbstractBaseElevatorControl> getElevetors(){
+	public List<ElevatorControlInterface> getElevetors(){
 		return elevetors;
 	}
 	
@@ -88,7 +90,7 @@ public final class ElevatorSystemConfig  {
 	 * @param index
 	 * @return
 	 */
-	public BaseFloorControl getFloorInterface(int index){
+	public FloorControlInterface getFloorInterface(int index){
 		return floorInputBoards.get(index);
 	}
 
