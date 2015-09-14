@@ -77,6 +77,6 @@ Run standalone webapplication
 
 ```
 cd ecSystem-Web/target/
-jar -jar ecSystem-Web-0.1.0.jar
+java -jar ecSystem-Web-0.1.0.jar
 ```
 Follow same instraction as given before to send http request to server.
