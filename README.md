@@ -80,3 +80,14 @@ cd ecSystem-Web/target/
 java -jar ecSystem-Web-0.1.0.jar
 ```
 Follow same instraction as given before to send http request to server.
+
+# Design Artifacts
+
+## Class Diagram
+
+![alt tag](https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemClassDiag.png)
+
+## Elevator State Diagram
+
+![alt tag](https://github.com/alokkushwah/ecSystem/raw/master/bin/ecSystemStateDiag.png)
+
